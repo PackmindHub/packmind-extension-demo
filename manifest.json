@@ -1,0 +1,15 @@
+{
+  "name": "packmind-plugin",
+  "version": "0.1.0",
+  "id": "packmind-plugin",
+  "description": "Sample Packmind plugin with a Hexa",
+  "backend": {
+    "hexaBundle": "dist/hexaBundle.cjs",
+    "hexaExport": "SamplePluginHexa",
+    "nestjsModule": "SamplePluginModule"
+  },
+  "dependencies": {
+    "packmind": "^1.3.0"
+  }
+}
+

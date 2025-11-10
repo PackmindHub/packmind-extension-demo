@@ -1,0 +1,28 @@
+{
+  "name": "packmind-plugin",
+  "version": "0.1.0",
+  "private": true,
+  "type": "commonjs",
+  "scripts": {
+    "build": "nx build",
+    "setup-core-deps": "node scripts/setup-core-deps.js",
+    "postinstall": "npm run setup-core-deps || echo 'Warning: setup-core-deps failed. Run it manually after building core packages in main repo.'",
+    "watch": "nx build --watch"
+  },
+  "dependencies": {
+    "@packmind/node-utils": "file:./core-deps/node-utils",
+    "@packmind/types": "file:./core-deps/types",
+    "@packmind/logger": "file:./core-deps/logger",
+    "typeorm": "^0.3.26"
+  },
+  "devDependencies": {
+    "@nx/js": "21.6.8",
+    "@nx/esbuild": "21.6.8",
+    "@nx/node": "21.6.8",
+    "esbuild": "^0.24.0",
+    "nx": "21.6.8",
+    "typescript": "~5.8.2",
+    "tslib": "^2.3.0"
+  }
+}
+
