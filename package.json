@@ -4,25 +4,35 @@
   "private": true,
   "type": "commonjs",
   "scripts": {
-    "build": "nx build",
+    "build": "nx run-many --target=build --projects=packmind-plugin-hexa,packmind-plugin-api,packmind-plugin-frontend && nx run packmind-plugin-frontend:extract-routes",
+    "build:hexa": "nx build packmind-plugin-hexa",
+    "build:api": "nx build packmind-plugin-api",
+    "build:frontend": "nx build packmind-plugin-frontend && nx run packmind-plugin-frontend:extract-routes",
     "setup-core-deps": "node scripts/setup-core-deps.js",
     "postinstall": "npm run setup-core-deps || echo 'Warning: setup-core-deps failed. Run it manually after building core packages in main repo.'",
-    "watch": "nx build --watch"
+    "watch": "nx run-many --target=build --projects=packmind-plugin-hexa,packmind-plugin-api,packmind-plugin-frontend --watch"
   },
   "dependencies": {
     "@packmind/node-utils": "file:./core-deps/node-utils",
     "@packmind/types": "file:./core-deps/types",
     "@packmind/logger": "file:./core-deps/logger",
+    "@packmind/ui": "file:./core-deps/ui",
     "typeorm": "^0.3.26"
   },
   "devDependencies": {
     "@nx/js": "21.6.8",
     "@nx/esbuild": "21.6.8",
     "@nx/node": "21.6.8",
+    "@types/react": "^18.2.0",
+    "@types/react-dom": "^18.2.0",
     "esbuild": "^0.24.0",
     "nx": "21.6.8",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router": "^7.1.1",
+    "react-router-dom": "^7.1.1",
+    "tsx": "^4.19.2",
     "typescript": "~5.8.2",
     "tslib": "^2.3.0"
   }
 }
-

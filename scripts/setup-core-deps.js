@@ -7,18 +7,32 @@
  * This allows the plugin to resolve these packages without needing npm link.
  */
 
-const fs = require('fs');
-const path = require('path');
-const { execSync } = require('child_process');
+const fs = require("fs");
+const path = require("path");
+const { execSync } = require("child_process");
 
-const PLUGIN_ROOT = path.resolve(__dirname, '..');
-const MAIN_REPO_PATH = process.env.PACKMIND_MAIN_REPO || path.resolve(PLUGIN_ROOT, '..', 'packmind');
-const CORE_DEPS_DIR = path.join(PLUGIN_ROOT, 'core-deps');
+const PLUGIN_ROOT = path.resolve(__dirname, "..");
+const MAIN_REPO_PATH =
+  process.env.PACKMIND_MAIN_REPO || path.resolve(PLUGIN_ROOT, "..", "packmind");
+const CORE_DEPS_DIR = path.join(PLUGIN_ROOT, "core-deps");
 
 const PACKAGES_TO_COPY = [
-  { name: '@packmind/node-utils', source: 'packages/node-utils', dist: 'dist/packages/node-utils' },
-  { name: '@packmind/types', source: 'packages/types', dist: 'dist/packages/types' },
-  { name: '@packmind/logger', source: 'packages/logger', dist: 'dist/packages/logger' },
+  {
+    name: "@packmind/node-utils",
+    source: "packages/node-utils",
+    dist: "dist/packages/node-utils",
+  },
+  {
+    name: "@packmind/types",
+    source: "packages/types",
+    dist: "dist/packages/types",
+  },
+  {
+    name: "@packmind/logger",
+    source: "packages/logger",
+    dist: "dist/packages/logger",
+  },
+  { name: "@packmind/ui", source: "packages/ui", dist: "dist/packages/packmind-ui" },
 ];
 
 function log(message) {
@@ -33,10 +47,12 @@ function error(message) {
 function checkMainRepo() {
   if (!fs.existsSync(MAIN_REPO_PATH)) {
     error(`Main repository not found at: ${MAIN_REPO_PATH}`);
-    error(`Set PACKMIND_MAIN_REPO environment variable to point to the main repo`);
+    error(
+      `Set PACKMIND_MAIN_REPO environment variable to point to the main repo`,
+    );
   }
 
-  const packageJsonPath = path.join(MAIN_REPO_PATH, 'package.json');
+  const packageJsonPath = path.join(MAIN_REPO_PATH, "package.json");
   if (!fs.existsSync(packageJsonPath)) {
     error(`package.json not found in main repository at: ${MAIN_REPO_PATH}`);
   }
@@ -56,12 +72,12 @@ function checkPackagesBuilt() {
 
   if (missingPackages.length > 0) {
     log(`The following packages need to be built in the main repository:`);
-    missingPackages.forEach(name => log(`  - ${name}`));
+    missingPackages.forEach((name) => log(`  - ${name}`));
     log(`\nRun in the main repository:`);
-    missingPackages.forEach(name => {
-      const pkgInfo = PACKAGES_TO_COPY.find(p => p.name === name);
+    missingPackages.forEach((name) => {
+      const pkgInfo = PACKAGES_TO_COPY.find((p) => p.name === name);
       if (pkgInfo) {
-        const nxProject = name.replace('@packmind/', '');
+        const nxProject = name.replace("@packmind/", "");
         log(`  nx build ${nxProject}`);
       }
     });
@@ -71,7 +87,10 @@ function checkPackagesBuilt() {
 
 function copyPackage(pkg) {
   const sourcePath = path.join(MAIN_REPO_PATH, pkg.dist);
-  const targetPath = path.join(CORE_DEPS_DIR, pkg.name.replace('@packmind/', ''));
+  const targetPath = path.join(
+    CORE_DEPS_DIR,
+    pkg.name.replace("@packmind/", ""),
+  );
 
   log(`Copying ${pkg.name}...`);
 
@@ -96,10 +115,10 @@ function copyRecursiveSync(src, dest) {
 
   if (isDirectory) {
     fs.mkdirSync(dest, { recursive: true });
-    fs.readdirSync(src).forEach(childItemName => {
+    fs.readdirSync(src).forEach((childItemName) => {
       copyRecursiveSync(
         path.join(src, childItemName),
-        path.join(dest, childItemName)
+        path.join(dest, childItemName),
       );
     });
   } else {
@@ -110,9 +129,10 @@ function copyRecursiveSync(src, dest) {
 function updatePackageJson() {
   // No need to update package.json anymore - it uses file: protocol
   // Just verify the packages exist
-  const nodeUtilsPath = path.join(CORE_DEPS_DIR, 'node-utils', 'package.json');
-  const typesPath = path.join(CORE_DEPS_DIR, 'types', 'package.json');
-  const loggerPath = path.join(CORE_DEPS_DIR, 'logger', 'package.json');
+  const nodeUtilsPath = path.join(CORE_DEPS_DIR, "node-utils", "package.json");
+  const typesPath = path.join(CORE_DEPS_DIR, "types", "package.json");
+  const loggerPath = path.join(CORE_DEPS_DIR, "logger", "package.json");
+  const uiPath = path.join(CORE_DEPS_DIR, "ui", "package.json");
 
   if (!fs.existsSync(nodeUtilsPath)) {
     error(`@packmind/node-utils package.json not found at ${nodeUtilsPath}`);
@@ -126,12 +146,16 @@ function updatePackageJson() {
     error(`@packmind/logger package.json not found at ${loggerPath}`);
   }
 
+  if (!fs.existsSync(uiPath)) {
+    error(`@packmind/ui package.json not found at ${uiPath}`);
+  }
+
   log(`  ✓ Package.json files verified`);
 }
 
 function main() {
-  log('Setting up core dependencies...');
-  log('');
+  log("Setting up core dependencies...");
+  log("");
 
   checkMainRepo();
   checkPackagesBuilt();
@@ -142,21 +166,22 @@ function main() {
   }
 
   // Copy packages
-  log('Copying packages from main repository...');
+  log("Copying packages from main repository...");
   PACKAGES_TO_COPY.forEach(copyPackage);
 
-  log('');
-  log('Verifying packages...');
+  log("");
+  log("Verifying packages...");
   updatePackageJson();
-  
-  log('');
+
+  log("");
   log('Next step: Run "npm install" to install dependencies');
 
-  log('');
-  log('✓ Core dependencies setup complete!');
-  log('');
-  log('Note: Run this script again after building packages in the main repository.');
+  log("");
+  log("✓ Core dependencies setup complete!");
+  log("");
+  log(
+    "Note: Run this script again after building packages in the main repository.",
+  );
 }
 
 main();
-

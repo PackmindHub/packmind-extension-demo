@@ -2,7 +2,5 @@
 // This is needed when the bundle is loaded dynamically
 import 'reflect-metadata';
 
-export { SamplePluginHexa } from './SamplePluginHexa';
 export { SamplePluginModule } from './SamplePluginModule';
 export { SamplePluginController } from './SamplePluginController';
-

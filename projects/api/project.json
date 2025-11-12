@@ -1,9 +1,9 @@
 {
-  "name": "packmind-plugin",
-  "$schema": "../node_modules/nx/schemas/project-schema.json",
-  "sourceRoot": "src",
+  "name": "packmind-plugin-api",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "projects/api/src",
   "projectType": "library",
-  "tags": [],
+  "tags": ["env:node"],
   "targets": {
     "build": {
       "executor": "@nx/esbuild:esbuild",
@@ -13,9 +13,9 @@
         "outputPath": "dist",
         "format": ["cjs"],
         "bundle": true,
-        "main": "src/index.ts",
-        "outputFileName": "hexaBundle.cjs",
-        "tsConfig": "tsconfig.json",
+        "main": "projects/api/src/index.ts",
+        "outputFileName": "apiBundle.cjs",
+        "tsConfig": "projects/api/tsconfig.json",
         "external": [
           "@packmind/node-utils",
           "@packmind/types",
@@ -29,4 +29,3 @@
     }
   }
 }
-

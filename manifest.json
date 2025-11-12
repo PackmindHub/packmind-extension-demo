@@ -2,14 +2,19 @@
   "name": "packmind-plugin",
   "version": "0.1.0",
   "id": "packmind-plugin",
-  "description": "Sample Packmind plugin with a Hexa",
-  "backend": {
-    "hexaBundle": "dist/hexaBundle.cjs",
-    "hexaExport": "SamplePluginHexa",
+  "description": "Sample Packmind plugin with Hexa, API module, and Frontend route",
+  "hexa": {
+    "bundle": "dist/hexaBundle.cjs",
+    "export": "SamplePluginHexa"
+  },
+  "api": {
+    "bundle": "dist/apiBundle.cjs",
     "nestjsModule": "SamplePluginModule"
+  },
+  "frontend": {
+    "bundle": "dist/frontendBundle.mjs"
   },
   "dependencies": {
     "packmind": "^1.3.0"
   }
 }
-

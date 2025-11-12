@@ -1,0 +1,44 @@
+{
+  "name": "packmind-plugin-frontend",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "projects/frontend/src",
+  "projectType": "library",
+  "tags": ["env:browser"],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "platform": "browser",
+        "outputPath": "dist",
+        "format": ["esm"],
+        "bundle": true,
+        "main": "projects/frontend/src/index.ts",
+        "outputFileName": "frontendBundle.mjs",
+        "tsConfig": "projects/frontend/tsconfig.json",
+        "external": [
+          "react",
+          "react-dom",
+          "react-router",
+          "react-router-dom",
+          "@packmind/ui",
+          "@packmind/types"
+        ],
+        "generatePackageJson": false,
+        "esbuildOptions": {
+          "outExtension": {
+            ".js": ".mjs"
+          }
+        }
+      }
+    },
+    "extract-routes": {
+      "executor": "nx:run-commands",
+      "options": {
+        "command": "node scripts/extract-routes.js",
+        "cwd": "{workspaceRoot}"
+      },
+      "dependsOn": ["build"]
+    }
+  }
+}

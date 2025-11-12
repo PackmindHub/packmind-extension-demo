@@ -1,0 +1,29 @@
+{
+  "name": "packmind-plugin-hexa",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "sourceRoot": "projects/hexa/src",
+  "projectType": "library",
+  "tags": ["env:node"],
+  "targets": {
+    "build": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "options": {
+        "platform": "node",
+        "outputPath": "dist",
+        "format": ["cjs"],
+        "bundle": true,
+        "main": "projects/hexa/src/index.ts",
+        "outputFileName": "hexaBundle.cjs",
+        "tsConfig": "projects/hexa/tsconfig.json",
+        "external": [
+          "@packmind/node-utils",
+          "@packmind/types",
+          "@packmind/logger",
+          "typeorm"
+        ],
+        "generatePackageJson": false
+      }
+    }
+  }
+}

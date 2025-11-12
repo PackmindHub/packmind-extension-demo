@@ -23,3 +23,6 @@ Thumbs.db
 npm-debug.log*
 
 .nx
+
+# Auto-generated files
+routes.json

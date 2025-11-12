@@ -1,0 +1,1 @@
+export { SamplePluginHexa } from './SamplePluginHexa';
